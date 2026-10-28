@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="#dce8ff"/>
+  <rect x="38" y="22" width="164" height="196" rx="6" fill="#fff" stroke="#9db6e6" stroke-width="2"/>
+  <rect x="38" y="22" width="164" height="34" rx="6" fill="#0d2f73"/>
+  <rect x="38" y="44" width="164" height="12" fill="#0d2f73"/>
+  <text x="120" y="45" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="#f2c230">FACTURA</text>
+  <g font-family="Arial" font-size="9" fill="#334">
+    <text x="50" y="74">Cliente: Empresa Andina S.A.C.</text>
+    <text x="50" y="88">RUC del cliente: obligatorio</text>
+  </g>
+  <rect x="50" y="98" width="140" height="14" fill="#dce8ff"/>
+  <g font-family="Arial" font-size="9" fill="#0d2f73"><text x="54" y="108">Detalle</text><text x="186" y="108" text-anchor="end">Importe</text></g>
+  <g font-family="Arial" font-size="9" fill="#334">
+    <text x="54" y="128">Útiles de oficina</text><text x="186" y="128" text-anchor="end">500.00</text>
+    <text x="54" y="146">IGV 18 %</text><text x="186" y="146" text-anchor="end">90.00</text>
+  </g>
+  <line x1="50" y1="158" x2="190" y2="158" stroke="#9db6e6"/>
+  <text x="54" y="176" font-family="Arial" font-weight="bold" font-size="11" fill="#0d2f73">TOTAL S/</text>
+  <text x="186" y="176" text-anchor="end" font-family="Arial" font-weight="bold" font-size="11" fill="#1e9e4a">590.00</text>
+  <circle cx="168" cy="200" r="13" fill="none" stroke="#d62839" stroke-width="2" opacity=".7"/>
+  <text x="168" y="203" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="7" fill="#d62839" opacity=".8">PAGADO</text>
+</svg>

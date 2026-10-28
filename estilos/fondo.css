@@ -1,0 +1,48 @@
+/* Fondo de la página: cielo, cerros, lago y monedas */
+.cielo { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: linear-gradient(180deg, #0b2f80 0%, #1a5ad0 45%, #5d9cf0 75%, #b9dafc 100%); }
+
+.paisaje { position: absolute; left: 0; bottom: 0; width: 100%; height: 42vh; min-height: 220px; }
+
+/* Sol */
+.sol { position: absolute; top: 9vh; right: 9vw; width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(circle, #fff7c9 0%, #ffd950 55%, #f2b51e 100%); box-shadow: 0 0 60px 20px rgba(255,217,80,.45), 0 0 140px 60px rgba(255,217,80,.18); }
+.sol::before { content: ""; position: absolute; inset: -70px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,230,120,.22) 0 6deg, transparent 6deg 18deg); animation: girarLento 80s linear infinite; mask: radial-gradient(circle, transparent 46px, #000 48px, transparent 115px); -webkit-mask: radial-gradient(circle, transparent 46px, #000 48px, transparent 115px); }
+
+/* Nubes y aves */
+.nube { position: absolute; height: 34px; background: rgba(255,255,255,.9); border-radius: 40px; animation: cruzar linear infinite; filter: drop-shadow(0 6px 10px rgba(10,40,110,.15)); }
+.nube::before, .nube::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+.nube::before { width: 46%; height: 160%; left: 14%; bottom: 25%; }
+.nube::after { width: 34%; height: 130%; right: 16%; bottom: 30%; }
+.ave { position: absolute; width: 26px; animation: volar linear infinite; }
+.ave svg { width: 100%; animation: aletear .5s ease-in-out infinite alternate; transform-origin: center; }
+
+/* Brillos del lago y balsa de totora */
+.brillo-lago { animation: brillar 3s ease-in-out infinite alternate; }
+.balsa { animation: navegar 70s linear infinite; }
+.balsa-cuerpo { animation: mecer 3s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center bottom; }
+
+/* Monedas en 3D */
+.moneda { position: absolute; bottom: -90px; perspective: 400px; animation: subirMoneda linear infinite; }
+.moneda .giro { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: girarMoneda linear infinite; }
+.moneda .cara-moneda { position: absolute; inset: 0; border-radius: 50%; display: grid; place-items: center; backface-visibility: hidden; font-family: var(--fuente-titulo); font-weight: 800; overflow: hidden; }
+.moneda .cara-moneda::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.75) 48%, transparent 60%); animation: destello 3.5s ease-in-out infinite; }
+.moneda .reverso { transform: rotateY(180deg); }
+.moneda.oro .cara-moneda { background: radial-gradient(circle at 50% 50%, #ffe680 0 52%, #e0a800 53% 58%, #ffd34d 59% 82%, #b8860b 83% 100%); color: #8a5d00; box-shadow: inset 0 0 0 2px #fff3b0; }
+.moneda.plata .cara-moneda { background: radial-gradient(circle at 50% 50%, #f4f7fb 0 60%, #a9b6c9 61% 66%, #e6ecf4 67% 84%, #7d8ca3 85% 100%); color: #4c5b73; box-shadow: inset 0 0 0 2px #ffffff; }
+.moneda .valor { font-size: 2.6em; line-height: 1; position: relative; z-index: 1; text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+.moneda .valor small { font-size: .45em; margin-right: 1px; }
+.moneda .escudito { width: 62%; position: relative; z-index: 1; }
+
+@keyframes girarLento { to { transform: rotate(360deg); } }
+@keyframes cruzar { from { transform: translateX(-30vw); } to { transform: translateX(130vw); } }
+@keyframes volar { from { transform: translateX(-10vw) translateY(0); } 50% { transform: translateX(55vw) translateY(-30px); } to { transform: translateX(115vw) translateY(10px); } }
+@keyframes aletear { from { transform: scaleY(1); } to { transform: scaleY(-.4); } }
+@keyframes brillar { from { opacity: .15; } to { opacity: .8; } }
+@keyframes navegar { from { transform: translateX(-200px); } to { transform: translateX(1640px); } }
+@keyframes mecer { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+@keyframes subirMoneda { from { transform: translateY(0); } to { transform: translateY(-120vh); } }
+@keyframes girarMoneda { to { transform: rotateY(360deg); } }
+@keyframes destello { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .moneda, .nube, .ave, .balsa { display: none; }
+}

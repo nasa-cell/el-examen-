@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examen de regímenes tributarios - IES Comercial 45 Emilio Romero Padilla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos/estilos.css">
+<link rel="stylesheet" href="estilos/fondo.css">
+</head>
+<body>
+
+<div class="cielo" id="cielo" aria-hidden="true"></div>
+<div class="botones-fijos">
+  <button class="boton-fijo" id="botonCompleta" aria-label="Pantalla completa" title="Pantalla completa">⛶</button>
+  <button class="boton-fijo" id="botonSonido"></button>
+</div>
+
+<!-- Pantalla de entrada -->
+<section id="entrada" class="pantalla activa">
+  <img class="escudo" src="imagenes/logo.png" alt="Escudo de la IES Comercial 45">
+  <h1 class="letrero" id="letrero" aria-label="Regímenes tributarios"></h1>
+  <p class="colegio">IES Comercial N.° 45 «Emilio Romero Padilla» – Puno<br>Curso de Administración, 4.° de secundaria</p>
+  <ul class="fichas">
+    <li class="ficha nrus">Nuevo RUS</li>
+    <li class="ficha rer">RER</li>
+    <li class="ficha rmt">Régimen MYPE</li>
+    <li class="ficha general">Régimen General</li>
+  </ul>
+  <p class="tema-clase">Tema: <b>¿Listo para emprender?</b></p>
+  <p class="reglas">20 preguntas con 4 alternativas y 30 segundos cada una.<br>Cada respuesta correcta vale una estrella y 3 buenas seguidas te dan una racha.</p>
+  <div class="botones-entrada">
+    <button class="boton-secundario" id="verTema">Ver el tema</button>
+    <button class="boton-principal" id="ingresar">Ingresar al examen</button>
+  </div>
+</section>
+
+<!-- Pantalla del tema: repaso antes del examen -->
+<section id="tema" class="pantalla">
+  <div class="hoja-tema">
+    <div class="cabeza-tema">
+      <img src="imagenes/logo.png" alt="">
+      <div>
+        <h2>Tema: ¿Listo para emprender?</h2>
+        <p>Repasa los regímenes tributarios antes de dar el examen.</p>
+      </div>
+      <button class="boton-completa-tema" id="temaCompleta">⛶ Pantalla completa</button>
+    </div>
+    <div class="pestanas" id="pestanas" role="tablist"></div>
+    <div class="contenido-tema" id="contenidoTema"></div>
+    <div class="pie-tema">
+      <button class="boton-secundario" id="volverInicio">Volver</button>
+      <button class="boton-principal" id="temaIngresar">Ingresar al examen</button>
+    </div>
+  </div>
+</section>
+
+<!-- Pantalla de preguntas -->
+<section id="juego" class="pantalla">
+  <div class="marcador">
+    <div class="colegio-mini"><img src="imagenes/logo.png" alt=""><span>Comercial 45</span></div>
+    <div class="contadores">
+      <span class="contador" id="estrellas" title="Estrellas: una por respuesta correcta">⭐ 0/20</span>
+      <span class="contador" id="rachas" title="Rachas: una cada 3 buenas seguidas">🔥 0</span>
+    </div>
+  </div>
+  <div class="zona" id="zona"></div>
+</section>
+
+<!-- Pantalla final -->
+<section id="final" class="pantalla">
+  <div class="tarjeta-final" id="tarjetaFinal"></div>
+</section>
+
+<script src="codigo/sonido.js"></script>
+<script src="codigo/fondo.js"></script>
+<script src="codigo/preguntas.js"></script>
+<script src="codigo/tema.js"></script>
+<script src="codigo/examen.js"></script>
+</body>
+</html>

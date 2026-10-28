@@ -7,11 +7,12 @@ Examen tipo concurso sobre los regímenes tributarios del Perú (Nuevo RUS, RER,
 ## Qué tiene
 
 - Pantalla «Ver el tema» con las infografías de la clase, un resumen de cada régimen, una tabla para compararlos y las palabras clave.
-- 20 preguntas con 4 alternativas y una foto cada una.
+- El examen es un formulario HTML (`form`, `fieldset`, `legend`, `label`, `input type="radio"`) con 20 preguntas de 4 alternativas y una foto cada una.
 - 30 segundos por pregunta. Si se falla o se acaba el tiempo, muestra la respuesta correcta y el porqué.
 - Una estrella por respuesta correcta (máximo 20) y una racha por cada 3 buenas seguidas.
 - Resultado final animado con la nota y las preguntas para repasar.
-- Música y sonidos, y botón de pantalla completa.
+- Música de fondo con la etiqueta `audio`, sonidos al acertar o fallar, y botón de pantalla completa.
+- Contenido escrito con HTML semántico: `header`, `nav`, `main`, `section`, `article`, `footer`, tablas con `caption` y `th`, figuras con `figcaption`, `abbr`, `dfn` y enlaces.
 - Se adapta a celular, tablet y computadora.
 
 ## Cómo usarlo sin internet
@@ -22,7 +23,8 @@ Descarga el proyecto (botón verde **Code** → **Download ZIP**), descomprímel
 
 - `index.html`: la página.
 - `estilos/`: colores, tamaños y animaciones.
-- `codigo/`: preguntas, examen, tema, fondo y sonidos.
+- `codigo/`: examen, tema, fondo y sonidos.
+- `audio/`: música de fondo.
 - `imagenes/`: logo, infografías y fotos de las preguntas.
 
 ## Créditos

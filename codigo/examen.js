@@ -9,6 +9,16 @@ let respondida = false, reloj = null, restante = 0;
 let fallos = [];
 
 const $ = id => document.getElementById(id);
+const formulario = $("formExamen");
+
+// Las preguntas están escritas en el formulario del index.html; aquí solo se leen
+const PREGUNTAS = [...formulario.querySelectorAll("fieldset.pregunta")].map(campo => ({
+  campo,
+  texto: campo.querySelector(".texto").textContent,
+  alternativas: [...campo.querySelectorAll(".alt")].map(a => a.querySelector("span:nth-of-type(2)").textContent),
+  correcta: +campo.dataset.correcta,
+  porque: campo.querySelector(".porque").innerHTML
+}));
 const sinMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Título con letras que rebotan
@@ -27,9 +37,23 @@ function pintarMarcador(animar) {
   if (animar) ["estrellas", "rachas"].forEach(id => { const c = $(id); c.classList.remove("salta"); void c.offsetWidth; c.classList.add("salta"); });
 }
 
+// Deja el formulario como nuevo para otra partida
+function limpiarFormulario() {
+  const nombre = $("nombreAlumno").value;
+  formulario.reset();
+  $("nombreAlumno").value = nombre;
+  PREGUNTAS.forEach(p => {
+    p.campo.hidden = true;
+    p.campo.disabled = false;
+    p.campo.querySelectorAll(".alt").forEach(a => { a.className = "alt"; a.querySelector(".icono").textContent = ""; });
+  });
+  $("resultado").innerHTML = "";
+}
+
 function empezar() {
   actual = estrellas = rachas = seguidas = 0;
   fallos = [];
+  limpiarFormulario();
   pintarMarcador(false);
   Sonido.musica();
   mostrarPantalla("juego");
@@ -40,24 +64,12 @@ function mostrarPregunta() {
   const p = PREGUNTAS[actual];
   respondida = false;
   Sonido.bajarMusica(false);
-  $("zona").innerHTML = `
-    <div class="cabeza">
-      <span class="numero">Pregunta <b>${actual + 1}</b> de ${PREGUNTAS.length}</span>
-      <div class="reloj" id="reloj"><div style="animation-duration:${SEGUNDOS_POR_PREGUNTA}s"></div></div>
-      <span class="segundos" id="segundos">${SEGUNDOS_POR_PREGUNTA}s</span>
-    </div>
-    <div class="tarjeta-pregunta">
-      <div class="dibujo"><img src="${p.imagen}" alt="${p.descripcion}" onerror="this.replaceWith('${p.dibujo}')"></div>
-      <div><span class="tema">${p.tema}</span><p class="texto">${p.texto}</p></div>
-    </div>
-    <div class="alternativas">
-      ${p.alternativas.map((a, i) => `
-        <button class="alt" data-i="${i}">
-          <span class="letra">${LETRAS[i]}</span><span>${a}</span><span class="icono" aria-hidden="true"></span>
-        </button>`).join("")}
-    </div>
-    <div id="resultado" aria-live="polite"></div>`;
-  document.querySelectorAll(".alt").forEach(b => b.addEventListener("click", () => responder(+b.dataset.i)));
+  PREGUNTAS.forEach((q, k) => { q.campo.hidden = k !== actual; });
+  $("numPregunta").textContent = actual + 1;
+  $("segundos").textContent = SEGUNDOS_POR_PREGUNTA + "s";
+  $("reloj").classList.remove("apurado");
+  $("reloj").innerHTML = `<div style="animation-duration:${SEGUNDOS_POR_PREGUNTA}s"></div>`;
+  $("resultado").innerHTML = "";
 
   restante = SEGUNDOS_POR_PREGUNTA;
   clearInterval(reloj);
@@ -100,11 +112,13 @@ function responder(i) {
   $("reloj").querySelector("div").style.animationPlayState = "paused";
 
   const p = PREGUNTAS[actual];
-  const botones = document.querySelectorAll(".alt");
+  const botones = p.campo.querySelectorAll(".alt");
   const acerto = i === p.correcta;
 
+  if (i >= 0) botones[i].querySelector("input").checked = true;
+  p.campo.disabled = true;
   botones.forEach((b, k) => {
-    b.disabled = true;
+    b.classList.add("bloqueada");
     if (k === p.correcta) { b.classList.add("correcta"); b.querySelector(".icono").textContent = "✔"; }
     else if (k === i) { b.classList.add("incorrecta"); b.querySelector(".icono").textContent = "✘"; }
     else b.classList.add("apagada");
@@ -118,7 +132,7 @@ function responder(i) {
     lanzarChispas(50);
     html = `<div class="explicacion bien"><span class="cara">⭐</span>
       <div><span class="titulo">¡Correcto! +1 estrella</span>${p.porque}</div>
-      <button class="boton-principal" id="seguir">${textoSeguir()}</button></div>`;
+      ${botonSeguir()}</div>`;
   } else {
     seguidas = 0;
     fallos.push(p);
@@ -126,18 +140,21 @@ function responder(i) {
     const inicio = i === -1 ? "Se acabó el tiempo." : "Incorrecto.";
     html = `<div class="explicacion mal"><span class="cara">💡</span>
       <div><span class="titulo">${inicio} Era «${p.alternativas[p.correcta]}»</span><b>¿Por qué?</b> ${p.porque}</div>
-      <button class="boton-principal" id="seguir">${textoSeguir()}</button></div>`;
+      ${botonSeguir()}</div>`;
   }
   pintarMarcador(true);
   Sonido.bajarMusica(true);
   $("resultado").innerHTML = html;
-  $("seguir").addEventListener("click", siguiente);
+  if (actual + 1 < PREGUNTAS.length) $("seguir").addEventListener("click", siguiente);
   $("seguir").focus({ preventScroll: true });
   $("resultado").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
-function textoSeguir() {
-  return actual + 1 < PREGUNTAS.length ? "Siguiente pregunta" : "Ver mis resultados";
+// En la última pregunta el botón envía el formulario
+function botonSeguir() {
+  return actual + 1 < PREGUNTAS.length
+    ? `<button type="button" class="boton-principal" id="seguir">Siguiente pregunta</button>`
+    : `<button type="submit" class="boton-principal" id="seguir">Ver mis resultados</button>`;
 }
 
 function siguiente() {
@@ -165,7 +182,8 @@ function escribir(elemento, texto) {
 }
 
 function fraseFinal(nota) {
-  const resumen = `Lograste ${estrellas} de ${PREGUNTAS.length} estrellas y ${rachas} ${rachas === 1 ? "racha" : "rachas"}.`;
+  const nombre = $("nombreAlumno").value.trim();
+  const resumen = `${nombre ? nombre + ", lograste" : "Lograste"} ${estrellas} de ${PREGUNTAS.length} estrellas y ${rachas} ${rachas === 1 ? "racha" : "rachas"}.`;
   if (nota === 20) return `${resumen} ¡Perfecto! Eres un experto en regímenes tributarios.`;
   if (nota >= 18) return `${resumen} ¡Excelente! Dominas los regímenes tributarios.`;
   if (nota >= 14) return `${resumen} ¡Muy bien! Repasa las que fallaste y llegarás a 20.`;
@@ -205,13 +223,21 @@ function mostrarFinal() {
   $("reiniciar").addEventListener("click", () => mostrarPantalla("entrada"));
 }
 
+formulario.addEventListener("change", e => {
+  if (e.target.name === "pregunta" + (actual + 1)) responder(+e.target.value);
+});
+formulario.addEventListener("submit", e => {
+  e.preventDefault();
+  if (respondida && actual === PREGUNTAS.length - 1) mostrarFinal();
+});
+
 // Teclado: 1-4 o A-D para responder
 document.addEventListener("keydown", e => {
   if (!$("juego").classList.contains("activa")) return;
   const tecla = e.key.toUpperCase();
   let i = "1234".indexOf(tecla);
   if (i < 0) i = LETRAS.indexOf(tecla);
-  if (i >= 0 && !respondida) responder(i);
+  if (i >= 0 && !respondida && e.target !== $("nombreAlumno")) responder(i);
 });
 
 $("ingresar").addEventListener("click", empezar);
@@ -225,7 +251,8 @@ function pintarBotonSonido() {
   botonSonido.setAttribute("aria-label", Sonido.silencio ? "Activar sonido" : "Silenciar sonido");
   botonSonido.title = botonSonido.getAttribute("aria-label");
 }
-botonSonido.addEventListener("click", () => { Sonido.alternar(); pintarBotonSonido();
+botonSonido.addEventListener("click", () => { Sonido.alternar(); pintarBotonSonido(); Sonido.tocar(); });
+pintarBotonSonido();
 
 // Pantalla completa para toda la página (tema y examen)
 function alternarCompleta() {
@@ -241,6 +268,5 @@ function pintarCompleta() {
 }
 $("botonCompleta").addEventListener("click", alternarCompleta);
 $("temaCompleta").addEventListener("click", alternarCompleta);
-document.addEventListener("fullscreenchange", pintarCompleta); Sonido.tocar(); });
-pintarBotonSonido();
+document.addEventListener("fullscreenchange", pintarCompleta);
 $("volverInicio").addEventListener("click", () => mostrarPantalla("entrada"));

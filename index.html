@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Examen de 20 preguntas sobre los regímenes tributarios del Perú: Nuevo RUS, RER, Régimen MYPE Tributario y Régimen General.">
+<meta name="author" content="IES Comercial N.° 45 «Emilio Romero Padilla» – Puno">
 <title>Examen de regímenes tributarios - IES Comercial 45 Emilio Romero Padilla</title>
+<link rel="icon" href="imagenes/logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -14,69 +17,528 @@
 
 <div class="cielo" id="cielo" aria-hidden="true"></div>
 <div class="botones-fijos">
-  <button class="boton-fijo" id="botonCompleta" aria-label="Pantalla completa" title="Pantalla completa">⛶</button>
-  <button class="boton-fijo" id="botonSonido"></button>
+  <button type="button" class="boton-fijo" id="botonCompleta" aria-label="Pantalla completa" title="Pantalla completa">⛶</button>
+  <button type="button" class="boton-fijo" id="botonSonido"></button>
 </div>
 
+<!-- Música de fondo del examen (huayno) -->
+<audio id="musicaFondo" src="audio/musica-huayno.mp3" loop preload="auto">
+  Tu navegador no puede reproducir la música de fondo.
+</audio>
+
+<main>
+
 <!-- Pantalla de entrada -->
-<section id="entrada" class="pantalla activa">
-  <img class="escudo" src="imagenes/logo.png" alt="Escudo de la IES Comercial 45">
-  <h1 class="letrero" id="letrero" aria-label="Regímenes tributarios"></h1>
-  <p class="colegio">IES Comercial N.° 45 «Emilio Romero Padilla» – Puno<br>Curso de Administración, 4.° de secundaria</p>
-  <ul class="fichas">
+<section id="entrada" class="pantalla activa" aria-labelledby="letrero">
+  <header class="cabeza-entrada">
+    <img class="escudo" src="imagenes/logo.png" alt="Escudo de la IES Comercial 45">
+    <h1 class="letrero" id="letrero" aria-label="Regímenes tributarios">Regímenes tributarios</h1>
+    <p class="colegio">IES Comercial N.° 45 «Emilio Romero Padilla» – Puno<br>Curso de Administración, 4.° de secundaria</p>
+  </header>
+  <ul class="fichas" aria-label="Regímenes del examen">
     <li class="ficha nrus">Nuevo RUS</li>
     <li class="ficha rer">RER</li>
     <li class="ficha rmt">Régimen MYPE</li>
     <li class="ficha general">Régimen General</li>
   </ul>
-  <p class="tema-clase">Tema: <b>¿Listo para emprender?</b></p>
-  <p class="reglas">20 preguntas con 4 alternativas y 30 segundos cada una.<br>Cada respuesta correcta vale una estrella y 3 buenas seguidas te dan una racha.</p>
+  <p class="tema-clase">Tema: <strong>¿Listo para emprender?</strong></p>
+  <p class="reglas"><strong>20 preguntas</strong> con 4 alternativas y <strong>30 segundos</strong> cada una.<br>Cada respuesta correcta vale <em>una estrella</em> y 3 buenas seguidas te dan <em>una racha</em>.</p>
+  <p class="campo-nombre">
+    <label for="nombreAlumno">Tu nombre <small>(opcional)</small></label>
+    <input type="text" id="nombreAlumno" name="alumno" form="formExamen" maxlength="30" autocomplete="given-name" placeholder="Escribe tu nombre">
+  </p>
   <div class="botones-entrada">
-    <button class="boton-secundario" id="verTema">Ver el tema</button>
-    <button class="boton-principal" id="ingresar">Ingresar al examen</button>
+    <button type="button" class="boton-secundario" id="verTema">Ver el tema</button>
+    <button type="button" class="boton-principal" id="ingresar">Ingresar al examen</button>
   </div>
 </section>
 
 <!-- Pantalla del tema: repaso antes del examen -->
-<section id="tema" class="pantalla">
-  <div class="hoja-tema">
-    <div class="cabeza-tema">
+<section id="tema" class="pantalla" aria-labelledby="tituloTema">
+  <article class="hoja-tema">
+    <header class="cabeza-tema">
       <img src="imagenes/logo.png" alt="">
       <div>
-        <h2>Tema: ¿Listo para emprender?</h2>
+        <h2 id="tituloTema">Tema: ¿Listo para emprender?</h2>
         <p>Repasa los regímenes tributarios antes de dar el examen.</p>
       </div>
-      <button class="boton-completa-tema" id="temaCompleta">⛶ Pantalla completa</button>
+      <button type="button" class="boton-completa-tema" id="temaCompleta">⛶ Pantalla completa</button>
+    </header>
+    <nav class="pestanas" id="pestanas" role="tablist" aria-label="Partes del tema">
+      <button type="button" class="pestana" role="tab" id="pestana-infografia" data-id="infografia" aria-controls="panel-infografia" aria-selected="true" style="--color-tema:#f2c230">Infografía</button>
+      <button type="button" class="pestana" role="tab" id="pestana-nrus" data-id="nrus" aria-controls="panel-nrus" aria-selected="false" style="--color-tema:#e0a800">Nuevo RUS</button>
+      <button type="button" class="pestana" role="tab" id="pestana-rer" data-id="rer" aria-controls="panel-rer" aria-selected="false" style="--color-tema:#1f5fd1">RER</button>
+      <button type="button" class="pestana" role="tab" id="pestana-rmt" data-id="rmt" aria-controls="panel-rmt" aria-selected="false" style="--color-tema:#1e9e4a">Régimen MYPE</button>
+      <button type="button" class="pestana" role="tab" id="pestana-general" data-id="general" aria-controls="panel-general" aria-selected="false" style="--color-tema:#d62839">Régimen General</button>
+      <button type="button" class="pestana" role="tab" id="pestana-comparar" data-id="comparar" aria-controls="panel-comparar" aria-selected="false" style="--color-tema:#0d2f73">Comparar</button>
+      <button type="button" class="pestana" role="tab" id="pestana-palabras" data-id="palabras" aria-controls="panel-palabras" aria-selected="false" style="--color-tema:#7a4cc2">Palabras clave</button>
+    </nav>
+    <div class="contenido-tema" id="contenidoTema">
+      <section class="panel-tema" id="panel-infografia" role="tabpanel" aria-labelledby="pestana-infografia" data-color="#f2c230">
+        <div class="galeria">
+          <figure class="infografia" style="animation-delay:0s">
+            <button type="button" class="abrir-foto" data-foto="0" aria-label="Ver «Infografía del Régimen Especial de Renta» en pantalla completa">
+              <img src="imagenes/tema-regimen-especial-1.jpg" alt="Infografía del Régimen Especial de Renta">
+              <span class="lupa">⛶ Pantalla completa</span>
+            </button>
+            <figcaption>Infografía del Régimen Especial de Renta</figcaption>
+          </figure>
+          <figure class="infografia" style="animation-delay:0.12s">
+            <button type="button" class="abrir-foto" data-foto="1" aria-label="Ver «Infografía educativa sobre el Régimen Especial de Renta» en pantalla completa">
+              <img src="imagenes/tema-regimen-especial-2.jpg" alt="Infografía educativa sobre el Régimen Especial de Renta">
+              <span class="lupa">⛶ Pantalla completa</span>
+            </button>
+            <figcaption>Infografía educativa sobre el Régimen Especial de Renta</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="panel-tema" id="panel-nrus" role="tabpanel" aria-labelledby="pestana-nrus" data-color="#e0a800" hidden>
+        <article class="regimen-tema">
+          <h3 class="visualmente-oculto">Nuevo RUS</h3>
+          <div class="lado-foto">
+            <img src="imagenes/preguntas/01.jpg" alt="Foto de ejemplo para el Nuevo RUS">
+            <p class="resumen-tema">El régimen más sencillo, para negocios muy pequeños que venden al consumidor final, como una bodega o un puesto del mercado.</p>
+            <p class="sabias"><strong>¿Sabías que…?</strong> Si un cliente le pide factura, el negocio debe cambiarse a un régimen que permita emitirlas.</p>
+          </div>
+          <ul class="datos-tema">
+            <li style="animation-delay:0s"><span class="ico" aria-hidden="true">👥</span><strong>¿Quiénes?</strong><span>Solo personas naturales y sucesiones indivisas. No pueden entrar empresas como una S.A.C.</span></li>
+            <li style="animation-delay:0.07s"><span class="ico" aria-hidden="true">💰</span><strong>Límite de ingresos</strong><span>Hasta S/ 96 000 al año o S/ 8 000 en un mes.</span></li>
+            <li style="animation-delay:0.14s"><span class="ico" aria-hidden="true">🪙</span><strong>Pago mensual</strong><span>Cuota fija: S/ 20 (categoría 1, hasta S/ 5 000 al mes) o S/ 50 (categoría 2, hasta S/ 8 000 al mes). Ya incluye el IGV y la renta.</span></li>
+            <li style="animation-delay:0.21000000000000002s"><span class="ico" aria-hidden="true">🧾</span><strong>Comprobantes</strong><span>Solo boletas de venta y tickets. No puede emitir facturas.</span></li>
+            <li style="animation-delay:0.28s"><span class="ico" aria-hidden="true">📒</span><strong>Libros contables</strong><span>No lleva libros; solo guarda sus comprobantes.</span></li>
+            <li style="animation-delay:0.35000000000000003s"><span class="ico" aria-hidden="true">📝</span><strong>Declaración anual</strong><span>No presenta.</span></li>
+          </ul>
+        </article>
+      </section>
+      <section class="panel-tema" id="panel-rer" role="tabpanel" aria-labelledby="pestana-rer" data-color="#1f5fd1" hidden>
+        <article class="regimen-tema">
+          <h3 class="visualmente-oculto">RER</h3>
+          <div class="lado-foto">
+            <img src="imagenes/preguntas/12.jpg" alt="Foto de ejemplo para el RER">
+            <p class="resumen-tema">Régimen Especial de Renta: para emprendedores, microempresas y pequeños negocios que generan rentas de tercera categoría.</p>
+            <p class="sabias"><strong>¿Sabías que…?</strong> En el RER no se presenta declaración anual de renta: el pago de cada mes es el definitivo.</p>
+          </div>
+          <ul class="datos-tema">
+            <li style="animation-delay:0s"><span class="ico" aria-hidden="true">👥</span><strong>¿Quiénes lo conforman?</strong><span>Personas naturales y jurídicas, con ingresos de hasta 300 UIT al año.</span></li>
+            <li style="animation-delay:0.07s"><span class="ico" aria-hidden="true">💰</span><strong>Límite de ingresos</strong><span>S/ 300 000 al año.</span></li>
+            <li style="animation-delay:0.14s"><span class="ico" aria-hidden="true">🛒</span><strong>Límite de compras</strong><span>S/ 300 000 al año.</span></li>
+            <li style="animation-delay:0.21000000000000002s"><span class="ico" aria-hidden="true">🏠</span><strong>Activos fijos</strong><span>Hasta S/ 70 000 (sin contar el inmueble).</span></li>
+            <li style="animation-delay:0.28s"><span class="ico" aria-hidden="true">📒</span><strong>Contabilidad y libros</strong><span>Registro simplificado: Registro de Compras y Registro de Ventas.</span></li>
+            <li style="animation-delay:0.35000000000000003s"><span class="ico" aria-hidden="true">％</span><strong>Tributación</strong><span>Pago de un porcentaje fijo del Impuesto a la Renta, según el tipo de actividad.</span></li>
+            <li style="animation-delay:0.42000000000000004s"><span class="ico" aria-hidden="true">🧾</span><strong>Comprobantes de pago</strong><span>Boletas de venta, notas de crédito y notas de débito.</span></li>
+            <li style="animation-delay:0.49000000000000005s"><span class="ico" aria-hidden="true">⭐</span><strong>Beneficio principal</strong><span>Menor carga administrativa y tributaria.</span></li>
+          </ul>
+        </article>
+      </section>
+      <section class="panel-tema" id="panel-rmt" role="tabpanel" aria-labelledby="pestana-rmt" data-color="#1e9e4a" hidden>
+        <article class="regimen-tema">
+          <h3 class="visualmente-oculto">Régimen MYPE</h3>
+          <div class="lado-foto">
+            <img src="imagenes/preguntas/15.jpg" alt="Foto de ejemplo para el Régimen MYPE">
+            <p class="resumen-tema">Régimen MYPE Tributario: para micro y pequeñas empresas que van creciendo y quieren pagar según lo que ganan.</p>
+            <p class="sabias"><strong>¿Sabías que…?</strong> Las empresas pequeñas pagan menos porque la primera parte de su ganancia tiene la tasa baja de 10 %.</p>
+          </div>
+          <ul class="datos-tema">
+            <li style="animation-delay:0s"><span class="ico" aria-hidden="true">👥</span><strong>¿Quiénes?</strong><span>Personas naturales y jurídicas (micro y pequeñas empresas).</span></li>
+            <li style="animation-delay:0.07s"><span class="ico" aria-hidden="true">💰</span><strong>Límite de ingresos</strong><span>Hasta 1 700 UIT de ingresos netos al año.</span></li>
+            <li style="animation-delay:0.14s"><span class="ico" aria-hidden="true">🗓️</span><strong>Pago mensual a cuenta</strong><span>1 % de los ingresos netos del mes, si al año no pasan de 300 UIT.</span></li>
+            <li style="animation-delay:0.21000000000000002s"><span class="ico" aria-hidden="true">🧮</span><strong>Impuesto anual</strong><span>10 % por las primeras 15 UIT de ganancia (renta neta) y 29,5 % por el resto.</span></li>
+            <li style="animation-delay:0.28s"><span class="ico" aria-hidden="true">🧾</span><strong>Comprobantes</strong><span>Puede emitir facturas, boletas y otros comprobantes.</span></li>
+            <li style="animation-delay:0.35000000000000003s"><span class="ico" aria-hidden="true">📝</span><strong>Declaración anual</strong><span>Sí presenta.</span></li>
+          </ul>
+        </article>
+      </section>
+      <section class="panel-tema" id="panel-general" role="tabpanel" aria-labelledby="pestana-general" data-color="#d62839" hidden>
+        <article class="regimen-tema">
+          <h3 class="visualmente-oculto">Régimen General</h3>
+          <div class="lado-foto">
+            <img src="imagenes/preguntas/02.jpg" alt="Foto de ejemplo para el Régimen General">
+            <p class="resumen-tema">El régimen para empresas de cualquier tamaño, desde un negocio mediano hasta una gran empresa.</p>
+            <p class="sabias"><strong>¿Sabías que…?</strong> No hay que confundir: 29,5 % es el Impuesto a la Renta y 18 % es el IGV.</p>
+          </div>
+          <ul class="datos-tema">
+            <li style="animation-delay:0s"><span class="ico" aria-hidden="true">👥</span><strong>¿Quiénes?</strong><span>Cualquier persona natural o jurídica con negocio.</span></li>
+            <li style="animation-delay:0.07s"><span class="ico" aria-hidden="true">♾️</span><strong>Límite de ingresos</strong><span>No tiene límite.</span></li>
+            <li style="animation-delay:0.14s"><span class="ico" aria-hidden="true">🏦</span><strong>Impuesto anual</strong><span>29,5 % de la renta neta (ingresos menos gastos aceptados).</span></li>
+            <li style="animation-delay:0.21000000000000002s"><span class="ico" aria-hidden="true">🗓️</span><strong>Pagos a cuenta</strong><span>Paga cada mes a cuenta del impuesto del año.</span></li>
+            <li style="animation-delay:0.28s"><span class="ico" aria-hidden="true">📚</span><strong>Libros contables</strong><span>Lleva contabilidad completa según sus ingresos.</span></li>
+            <li style="animation-delay:0.35000000000000003s"><span class="ico" aria-hidden="true">🧾</span><strong>Comprobantes</strong><span>Puede emitir facturas, boletas y otros comprobantes.</span></li>
+            <li style="animation-delay:0.42000000000000004s"><span class="ico" aria-hidden="true">📝</span><strong>Declaración anual</strong><span>Sí presenta.</span></li>
+          </ul>
+        </article>
+      </section>
+      <section class="panel-tema" id="panel-comparar" role="tabpanel" aria-labelledby="pestana-comparar" data-color="#0d2f73" hidden>
+        <div class="tabla-tema">
+          <table>
+            <caption class="visualmente-oculto">Comparación de los cuatro regímenes tributarios</caption>
+            <thead>
+              <tr><th scope="col"><span class="visualmente-oculto">Característica</span></th><th scope="col">Nuevo RUS</th><th scope="col">RER</th><th scope="col">Régimen MYPE</th><th scope="col">Régimen General</th></tr>
+            </thead>
+            <tbody>
+              <tr style="animation-delay:0s"><th scope="row">¿Empresas (S.A.C.)?</th><td>No</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
+              <tr style="animation-delay:0.08s"><th scope="row">Límite de ingresos al año</th><td>S/ 96 000</td><td>S/ 300 000</td><td>1 700 UIT</td><td>Sin límite</td></tr>
+              <tr style="animation-delay:0.16s"><th scope="row">¿Cómo paga?</th><td>Cuota fija S/ 20 o S/ 50</td><td>Porcentaje fijo mensual</td><td>1 % al mes y 10 % / 29,5 % al año</td><td>Pagos a cuenta y 29,5 % al año</td></tr>
+              <tr style="animation-delay:0.24s"><th scope="row">Libros</th><td>Ninguno</td><td>Compras y Ventas</td><td>Según ingresos</td><td>Contabilidad completa</td></tr>
+              <tr style="animation-delay:0.32s"><th scope="row">Declaración anual</th><td>No</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fuente-tema">Fuente: <a href="https://www.sunat.gob.pe/" target="_blank" rel="noopener noreferrer">SUNAT</a> e infografía de la clase. <a href="imagenes/creditos.txt" target="_blank">Créditos de las fotos</a>.</p>
+      </section>
+      <section class="panel-tema" id="panel-palabras" role="tabpanel" aria-labelledby="pestana-palabras" data-color="#7a4cc2" hidden>
+        <div class="palabras">
+          <div class="palabra" style="animation-delay:0s">
+            <span aria-hidden="true">🏛️</span>
+            <div><dfn><abbr title="Superintendencia Nacional de Aduanas y de Administración Tributaria">SUNAT</abbr></dfn><p>Superintendencia Nacional de Aduanas y de Administración Tributaria. Recauda y fiscaliza los tributos.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.06s">
+            <span aria-hidden="true">🆔</span>
+            <div><dfn><abbr title="Registro Único de Contribuyentes">RUC</abbr></dfn><p>Registro Único de Contribuyentes: número de 11 dígitos que identifica al negocio.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.12s">
+            <span aria-hidden="true">📏</span>
+            <div><dfn><abbr title="Unidad Impositiva Tributaria">UIT</abbr></dfn><p>Unidad Impositiva Tributaria: un valor en soles que fija el Gobierno cada año y sirve de medida para límites y multas.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.18s">
+            <span aria-hidden="true">💰</span>
+            <div><dfn><abbr title="Impuesto General a las Ventas">IGV</abbr></dfn><p>Impuesto General a las Ventas: 18 % (16 % de IGV más 2 % de Impuesto de Promoción Municipal).</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.24s">
+            <span aria-hidden="true">🧾</span>
+            <div><dfn>Boleta de venta</dfn><p>Comprobante para el consumidor final.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.3s">
+            <span aria-hidden="true">📄</span>
+            <div><dfn>Factura</dfn><p>Comprobante para empresas; lleva el RUC del cliente y el IGV aparte.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.36s">
+            <span aria-hidden="true">📈</span>
+            <div><dfn>Renta neta</dfn><p>La ganancia: ingresos menos gastos aceptados.</p></div>
+          </div>
+          <div class="palabra" style="animation-delay:0.42s">
+            <span aria-hidden="true">🏪</span>
+            <div><dfn>Tercera categoría</dfn><p>Las rentas que vienen de un negocio o empresa.</p></div>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="pestanas" id="pestanas" role="tablist"></div>
-    <div class="contenido-tema" id="contenidoTema"></div>
-    <div class="pie-tema">
-      <button class="boton-secundario" id="volverInicio">Volver</button>
-      <button class="boton-principal" id="temaIngresar">Ingresar al examen</button>
-    </div>
-  </div>
+    <footer class="pie-tema">
+      <button type="button" class="boton-secundario" id="volverInicio">Volver</button>
+      <button type="button" class="boton-principal" id="temaIngresar">Ingresar al examen</button>
+    </footer>
+  </article>
 </section>
 
-<!-- Pantalla de preguntas -->
-<section id="juego" class="pantalla">
-  <div class="marcador">
+<!-- Pantalla de preguntas: el examen es un formulario -->
+<section id="juego" class="pantalla" aria-label="Examen">
+  <header class="marcador">
     <div class="colegio-mini"><img src="imagenes/logo.png" alt=""><span>Comercial 45</span></div>
     <div class="contadores">
       <span class="contador" id="estrellas" title="Estrellas: una por respuesta correcta">⭐ 0/20</span>
       <span class="contador" id="rachas" title="Rachas: una cada 3 buenas seguidas">🔥 0</span>
     </div>
+  </header>
+  <div class="zona" id="zona">
+    <div class="cabeza">
+      <p class="numero">Pregunta <b id="numPregunta">1</b> de 20</p>
+      <div class="reloj" id="reloj" role="timer" aria-label="Tiempo que queda"><div></div></div>
+      <output class="segundos" id="segundos" for="formExamen">30s</output>
+    </div>
+    <form id="formExamen" class="form-examen" action="#" method="post" autocomplete="off">
+      <fieldset class="pregunta" id="pregunta-1" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 1 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/01.jpg" alt="Tienda de un mercado de Puno" onerror="this.replaceWith('🏪')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">Doña Rosa tiene una bodega pequeña y vende solo a vecinos (consumidores finales). ¿Qué régimen es el más sencillo para ella?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta1" value="0"><span class="letra">A</span><span>Régimen General</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta1" value="1"><span class="letra">B</span><span>Nuevo RUS</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta1" value="2"><span class="letra">C</span><span>Régimen MYPE Tributario</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta1" value="3"><span class="letra">D</span><span>Régimen Especial (RER)</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Nuevo RUS es para personas naturales con negocios pequeños que venden a consumidores finales. Paga una cuota fija al mes y no lleva libros contables.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-2" data-correcta="3" hidden>
+        <legend class="visualmente-oculto">Pregunta 2 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/02.jpg" alt="Edificio moderno de una gran empresa en Lima" onerror="this.replaceWith('🏢')"></figure>
+          <div><span class="tema">Régimen General</span><p class="texto">¿Qué régimen no tiene límite de ingresos?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta2" value="0"><span class="letra">A</span><span>Nuevo RUS</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta2" value="1"><span class="letra">B</span><span>Régimen Especial (RER)</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta2" value="2"><span class="letra">C</span><span>Régimen MYPE Tributario</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta2" value="3"><span class="letra">D</span><span>Régimen General</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Régimen General acepta empresas de cualquier tamaño. Los otros regímenes tienen un tope de ingresos al año.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-3" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 3 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/03.jpg" alt="Local de la SUNAT" onerror="this.replaceWith('🏛️')"></figure>
+          <div><span class="tema">SUNAT</span><p class="texto">¿Qué institución administra y cobra los tributos internos en el Perú?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta3" value="0"><span class="letra">A</span><span>RENIEC</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta3" value="1"><span class="letra">B</span><span>SUNAT</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta3" value="2"><span class="letra">C</span><span>SUNARP</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta3" value="3"><span class="letra">D</span><span>INDECOPI</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>La SUNAT (Superintendencia Nacional de Aduanas y de Administración Tributaria) recauda y fiscaliza los tributos. RENIEC ve el DNI, SUNARP los registros públicos e INDECOPI protege al consumidor.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-4" data-correcta="0" hidden>
+        <legend class="visualmente-oculto">Pregunta 4 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/04.jpg" alt="Fachada de una oficina de la SUNAT" onerror="this.replaceWith('🪪')"></figure>
+          <div><span class="tema">RUC</span><p class="texto">¿Cómo se llama el número que identifica a un negocio ante la SUNAT?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta4" value="0"><span class="letra">A</span><span>RUC</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta4" value="1"><span class="letra">B</span><span>DNI</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta4" value="2"><span class="letra">C</span><span>UIT</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta4" value="3"><span class="letra">D</span><span>IGV</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El RUC (Registro Único de Contribuyentes) tiene 11 dígitos y todo negocio lo necesita para tributar. El DNI identifica a la persona, no al negocio.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-5" data-correcta="2" hidden>
+        <legend class="visualmente-oculto">Pregunta 5 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/05.svg" alt="Boleta de venta de una bodega" onerror="this.replaceWith('🧾')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">¿Qué comprobantes de pago puede entregar un negocio del Nuevo RUS?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta5" value="0"><span class="letra">A</span><span>Facturas y boletas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta5" value="1"><span class="letra">B</span><span>Solo facturas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta5" value="2"><span class="letra">C</span><span>Solo boletas de venta y tickets</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta5" value="3"><span class="letra">D</span><span>Ningún comprobante</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>En el Nuevo RUS solo se entregan boletas de venta y tickets. No se pueden emitir facturas, porque se vende a consumidores finales.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-6" data-correcta="3" hidden>
+        <legend class="visualmente-oculto">Pregunta 6 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/06.jpg" alt="Caja registradora" onerror="this.replaceWith('💰')"></figure>
+          <div><span class="tema">IGV</span><p class="texto">¿Cuál es la tasa general del IGV (Impuesto General a las Ventas) en el Perú?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta6" value="0"><span class="letra">A</span><span>10 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta6" value="1"><span class="letra">B</span><span>15 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta6" value="2"><span class="letra">C</span><span>29,5 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta6" value="3"><span class="letra">D</span><span>18 %</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>La tasa general es 18 %: 16 % de IGV más 2 % de Impuesto de Promoción Municipal. El 29,5 % es la tasa del Impuesto a la Renta del Régimen General.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-7" data-correcta="0" hidden>
+        <legend class="visualmente-oculto">Pregunta 7 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/07.jpg" alt="Billete antiguo de 20 soles" onerror="this.replaceWith('🪙')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">En el Nuevo RUS, ¿cuánto paga al mes un negocio de la categoría 1 (ingresos de hasta S/ 5 000 al mes)?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta7" value="0"><span class="letra">A</span><span>S/ 20</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta7" value="1"><span class="letra">B</span><span>S/ 50</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta7" value="2"><span class="letra">C</span><span>S/ 100</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta7" value="3"><span class="letra">D</span><span>El 1,5 % de sus ventas</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>La categoría 1 paga una cuota fija de S/ 20 al mes y la categoría 2 (hasta S/ 8 000 al mes) paga S/ 50. Esa cuota ya incluye el IGV y el Impuesto a la Renta.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-8" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 8 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/08.jpg" alt="Mercado Central de Puno" onerror="this.replaceWith('📉')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">¿Cuál es el máximo de ingresos al año para quedarse en el Nuevo RUS?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta8" value="0"><span class="letra">A</span><span>S/ 525 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta8" value="1"><span class="letra">B</span><span>S/ 96 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta8" value="2"><span class="letra">C</span><span>1 700 UIT</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta8" value="3"><span class="letra">D</span><span>No tiene límite</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Nuevo RUS permite hasta S/ 96 000 al año (o S/ 8 000 en un mes). Si el negocio gana más, debe pasar a otro régimen.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-9" data-correcta="2" hidden>
+        <legend class="visualmente-oculto">Pregunta 9 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/09.jpg" alt="Reunión de trabajo en una empresa" onerror="this.replaceWith('👔')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">Una empresa S.A.C. (persona jurídica) quiere acogerse al Nuevo RUS. ¿Puede hacerlo?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta9" value="0"><span class="letra">A</span><span>Sí, cualquier empresa puede</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta9" value="1"><span class="letra">B</span><span>Sí, si tiene menos de 5 trabajadores</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta9" value="2"><span class="letra">C</span><span>No, solo pueden las personas naturales y las sucesiones indivisas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta9" value="3"><span class="letra">D</span><span>Sí, si vende solo en Puno</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Nuevo RUS es solo para personas naturales y sucesiones indivisas. Las empresas como una S.A.C. o una E.I.R.L. deben ir al RER, al Régimen MYPE o al General.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-10" data-correcta="0" hidden>
+        <legend class="visualmente-oculto">Pregunta 10 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/10.jpg" alt="Libro contable abierto" onerror="this.replaceWith('📒')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">¿En qué régimen el negocio NO está obligado a llevar libros contables?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta10" value="0"><span class="letra">A</span><span>Nuevo RUS</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta10" value="1"><span class="letra">B</span><span>Régimen Especial (RER)</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta10" value="2"><span class="letra">C</span><span>Régimen MYPE Tributario</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta10" value="3"><span class="letra">D</span><span>Régimen General</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Nuevo RUS no lleva libros contables: solo guarda sus comprobantes. El RER lleva Registro de Compras y de Ventas, y el Régimen MYPE y el General llevan más libros.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-11" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 11 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/11.svg" alt="Factura con IGV" onerror="this.replaceWith('🤝')"></figure>
+          <div><span class="tema">Nuevo RUS</span><p class="texto">La bodega de Luis, que está en el Nuevo RUS, empieza a vender a empresas que le piden factura. ¿Qué debe hacer?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta11" value="0"><span class="letra">A</span><span>Seguir igual y entregar boletas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta11" value="1"><span class="letra">B</span><span>Cambiarse a un régimen que permita emitir facturas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta11" value="2"><span class="letra">C</span><span>Cerrar el negocio</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta11" value="3"><span class="letra">D</span><span>Pedir la factura prestada a otro negocio</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>En el Nuevo RUS no se emiten facturas. Si sus clientes las necesitan, Luis debe cambiarse a un régimen que las permita, como el Régimen MYPE o el General.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-12" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 12 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/12.jpg" alt="Ferretería con productos en estantes" onerror="this.replaceWith('📊')"></figure>
+          <div><span class="tema">RER</span><p class="texto">¿Cuál es el límite de ingresos al año en el Régimen Especial de Renta (RER)?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta12" value="0"><span class="letra">A</span><span>S/ 96 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta12" value="1"><span class="letra">B</span><span>S/ 300 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta12" value="2"><span class="letra">C</span><span>1 700 UIT</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta12" value="3"><span class="letra">D</span><span>No tiene límite</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>Según el tema, el RER permite ingresos de hasta S/ 300 000 al año (y compras hasta el mismo monto). S/ 96 000 es el tope del Nuevo RUS y 1 700 UIT es el del Régimen MYPE.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-13" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 13 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/13.jpg" alt="Calendario de pared" onerror="this.replaceWith('📅')"></figure>
+          <div><span class="tema">RER</span><p class="texto">En el RER, ¿cómo se paga el Impuesto a la Renta?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta13" value="0"><span class="letra">A</span><span>Con una cuota fija de S/ 20</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta13" value="1"><span class="letra">B</span><span>Con un porcentaje fijo de los ingresos, según el tipo de actividad</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta13" value="2"><span class="letra">C</span><span>Con el 29,5 % de la ganancia del año</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta13" value="3"><span class="letra">D</span><span>No se paga nada</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>En el RER se paga un porcentaje fijo del Impuesto a la Renta sobre los ingresos, según el tipo de actividad. La cuota fija de S/ 20 es del Nuevo RUS y el 29,5 % es del Régimen General.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-14" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 14 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/14.jpg" alt="Taller con mesas y equipos" onerror="this.replaceWith('🏠')"></figure>
+          <div><span class="tema">RER</span><p class="texto">En el RER, ¿hasta cuánto pueden valer los activos fijos del negocio (sin contar el inmueble)?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta14" value="0"><span class="letra">A</span><span>S/ 20 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta14" value="1"><span class="letra">B</span><span>S/ 70 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta14" value="2"><span class="letra">C</span><span>S/ 300 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta14" value="3"><span class="letra">D</span><span>No tiene límite</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>Según el tema, en el RER los activos fijos (máquinas, muebles, vehículos) pueden valer hasta S/ 70 000, sin contar el local o inmueble. S/ 300 000 es el límite de ingresos.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-15" data-correcta="2" hidden>
+        <legend class="visualmente-oculto">Pregunta 15 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/15.jpg" alt="Comerciante en las islas de los Uros, Puno" onerror="this.replaceWith('📈')"></figure>
+          <div><span class="tema">Régimen MYPE</span><p class="texto">¿Hasta cuántos ingresos netos al año puede tener un negocio del Régimen MYPE Tributario?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta15" value="0"><span class="letra">A</span><span>S/ 96 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta15" value="1"><span class="letra">B</span><span>S/ 525 000</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta15" value="2"><span class="letra">C</span><span>1 700 UIT</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta15" value="3"><span class="letra">D</span><span>No tiene límite</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Régimen MYPE Tributario es para micro y pequeñas empresas con ingresos de hasta 1 700 UIT al año.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-16" data-correcta="0" hidden>
+        <legend class="visualmente-oculto">Pregunta 16 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/16.jpg" alt="Calculadora" onerror="this.replaceWith('🧮')"></figure>
+          <div><span class="tema">Régimen MYPE</span><p class="texto">En el Régimen MYPE, ¿qué tasa anual se paga por los primeros 15 UIT de ganancia (renta neta)?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta16" value="0"><span class="letra">A</span><span>10 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta16" value="1"><span class="letra">B</span><span>18 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta16" value="2"><span class="letra">C</span><span>29,5 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta16" value="3"><span class="letra">D</span><span>1 %</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>Por las primeras 15 UIT de ganancia se paga 10 %, y por lo que pase de ese monto se paga 29,5 %. Así pagan menos las empresas pequeñas.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-17" data-correcta="0" hidden>
+        <legend class="visualmente-oculto">Pregunta 17 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/17.jpg" alt="Ventanilla de un banco" onerror="this.replaceWith('🗓️')"></figure>
+          <div><span class="tema">Régimen MYPE</span><p class="texto">Un negocio del Régimen MYPE con ingresos de hasta 300 UIT al año, ¿cuánto paga cada mes a cuenta del Impuesto a la Renta?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta17" value="0"><span class="letra">A</span><span>1 % de sus ingresos netos del mes</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta17" value="1"><span class="letra">B</span><span>18 % de sus ventas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta17" value="2"><span class="letra">C</span><span>Una cuota fija de S/ 50</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta17" value="3"><span class="letra">D</span><span>No paga nada al mes</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>Hasta 300 UIT de ingresos al año, el pago a cuenta es el 1 % de los ingresos netos del mes. Al final del año se hace la declaración anual.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-18" data-correcta="3" hidden>
+        <legend class="visualmente-oculto">Pregunta 18 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/18.jpg" alt="Edificio de un banco en Lima" onerror="this.replaceWith('🏦')"></figure>
+          <div><span class="tema">Régimen General</span><p class="texto">En el Régimen General, ¿cuál es la tasa anual del Impuesto a la Renta para las empresas?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta18" value="0"><span class="letra">A</span><span>10 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta18" value="1"><span class="letra">B</span><span>1,5 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta18" value="2"><span class="letra">C</span><span>18 %</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta18" value="3"><span class="letra">D</span><span>29,5 %</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>En el Régimen General las empresas pagan 29,5 % sobre su renta neta (ingresos menos gastos aceptados). El 18 % es el IGV.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-19" data-correcta="2" hidden>
+        <legend class="visualmente-oculto">Pregunta 19 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/19.jpg" alt="Formulario de impuestos" onerror="this.replaceWith('📝')"></figure>
+          <div><span class="tema">Declaración anual</span><p class="texto">¿Qué regímenes deben presentar la declaración jurada anual del Impuesto a la Renta?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta19" value="0"><span class="letra">A</span><span>Solo el Nuevo RUS</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta19" value="1"><span class="letra">B</span><span>Solo el RER</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta19" value="2"><span class="letra">C</span><span>El Régimen MYPE y el Régimen General</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta19" value="3"><span class="letra">D</span><span>Ninguno</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>El Régimen MYPE y el Régimen General hacen pagos a cuenta y al final del año presentan la declaración anual. El Nuevo RUS y el RER no la presentan.</p>
+      </fieldset>
+      <fieldset class="pregunta" id="pregunta-20" data-correcta="1" hidden>
+        <legend class="visualmente-oculto">Pregunta 20 de 20</legend>
+        <div class="tarjeta-pregunta">
+          <figure class="dibujo"><img src="imagenes/preguntas/20.jpg" alt="Moneda peruana de 100 soles de oro" onerror="this.replaceWith('📏')"></figure>
+          <div><span class="tema">UIT</span><p class="texto">¿Qué es la UIT (Unidad Impositiva Tributaria)?</p></div>
+        </div>
+        <div class="alternativas">
+          <label class="alt"><input type="radio" name="pregunta20" value="0"><span class="letra">A</span><span>Un impuesto que se paga cada mes</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta20" value="1"><span class="letra">B</span><span>Un valor en soles que sirve de referencia para límites, multas y tasas</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta20" value="2"><span class="letra">C</span><span>El número de RUC del negocio</span><span class="icono" aria-hidden="true"></span></label>
+          <label class="alt"><input type="radio" name="pregunta20" value="3"><span class="letra">D</span><span>Un tipo de comprobante de pago</span><span class="icono" aria-hidden="true"></span></label>
+        </div>
+        <p class="porque" hidden>La UIT es un monto en soles que fija el Gobierno cada año. Se usa como medida para los topes de los regímenes, las multas y otras cantidades tributarias.</p>
+      </fieldset>
+      <div id="resultado" aria-live="polite"></div>
+    </form>
   </div>
-  <div class="zona" id="zona"></div>
 </section>
 
 <!-- Pantalla final -->
-<section id="final" class="pantalla">
+<section id="final" class="pantalla" aria-label="Resultado del examen">
   <div class="tarjeta-final" id="tarjetaFinal"></div>
 </section>
 
+</main>
+
 <script src="codigo/sonido.js"></script>
 <script src="codigo/fondo.js"></script>
-<script src="codigo/preguntas.js"></script>
 <script src="codigo/tema.js"></script>
 <script src="codigo/examen.js"></script>
 </body>
